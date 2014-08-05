@@ -23,6 +23,7 @@ from pprint import pprint
 
 from mappings.image_dos_header import IMAGE_DOS_HEADER_MAPPINGS
 from mappings.image_optional_header import IMAGE_OPTIONAL_HEADER32_MAPPINGS
+from mappings.image_sections import IMAGE_SECTION_HEADER_MAPPINGS
 import maec.utils
 
 
@@ -57,10 +58,17 @@ class PefileParser(object):
         optheaders_dict['image_optional_header'] = self.perform_mappings(self.pe.OPTIONAL_HEADER, IMAGE_OPTIONAL_HEADER32_MAPPINGS)
         return optheaders_dict
 
+    def parse_pe_sections(self):
+        sections_dict = {}
+        for section in self.pe.sections:
+            sections_dict[section.name] = self.perform_mappings(section, IMAGE_SECTION_HEADER_MAPPINGS)
+        return sections_dict
+
     def process_pefile_object(self):
         self.pe_file_dictionary = {'xsi:type':'WindowsExecutableFileObjectType'}
         self.pe_file_dictionary['headers'] = self.parse_pe_headers()
         self.pe_file_dictionary['optional_header'] = self.parse_pe_optional_header()
+        self.pe_file_dictionary['sections'] = self.parse_pe_sections()
         pprint(self.pe_file_dictionary)
 
 if __name__ == '__main__':
