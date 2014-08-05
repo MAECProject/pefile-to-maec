@@ -22,6 +22,7 @@ except ImportError:
 from pprint import pprint
 
 from mappings.image_dos_header import IMAGE_DOS_HEADER_MAPPINGS
+from mappings.image_optional_header import IMAGE_OPTIONAL_HEADER32_MAPPINGS
 import maec.utils
 
 
@@ -51,9 +52,15 @@ class PefileParser(object):
         headers_dict['image_dos_header'] = self.perform_mappings(self.pe.DOS_HEADER, IMAGE_DOS_HEADER_MAPPINGS)
         return headers_dict
 
+    def parse_pe_optional_header(self):
+        optheaders_dict = {}
+        optheaders_dict['image_optional_header'] = self.perform_mappings(self.pe.OPTIONAL_HEADER, IMAGE_OPTIONAL_HEADER32_MAPPINGS)
+        return optheaders_dict
+
     def process_pefile_object(self):
         self.pe_file_dictionary = {'xsi:type':'WindowsExecutableFileObjectType'}
         self.pe_file_dictionary['headers'] = self.parse_pe_headers()
+        self.pe_file_dictionary['optional_header'] = self.parse_pe_optional_header()
         pprint(self.pe_file_dictionary)
 
 if __name__ == '__main__':
