@@ -19,6 +19,42 @@ except ImportError:
                 install pefile.\n'
         print 'ERROR MSG => %s' % err.message
         sys.exit(-1)
+from pprint import pprint
+
+from mappings.image_dos_header import IMAGE_DOS_HEADER_MAPPINGS
+import maec.utils
+
+
+class PefileParser(object):
+    def __init__(self, pe):
+        self.pe = pe
+        self.pe_file_dictionary = {}
+        self.process_pefile_object()
+
+    def perform_mappings(self, struct_instance, object_mapping_dict):
+        output_dict = {}
+        for key, value in struct_instance.dump_dict().items():
+            if key in object_mapping_dict:
+                if isinstance(object_mapping_dict[key], str):
+                    output_dict[object_mapping_dict[key]] = str(getattr(struct_instance, key))
+                elif isinstance(object_mapping_dict[key], dict):
+                    mapping_dict = object_mapping_dict[key]
+                    # Handle any fields from which the value must be extracted
+                    if 'Value' in mapping_dict:
+                        child_value = mapping_dict['Value']
+                        if child_value:
+                            output_dict[mapping_dict['mapping']] = str(child_value.strip())
+        return output_dict
+
+    def parse_pe_headers(self):
+        headers_dict = {}
+        headers_dict['image_dos_header'] = self.perform_mappings(self.pe.DOS_HEADER, IMAGE_DOS_HEADER_MAPPINGS)
+        return headers_dict
+
+    def process_pefile_object(self):
+        self.pe_file_dictionary = {'xsi:type':'WindowsExecutableFileObjectType'}
+        self.pe_file_dictionary['headers'] = self.parse_pe_headers()
+        pprint(self.pe_file_dictionary)
 
 if __name__ == '__main__':
 
