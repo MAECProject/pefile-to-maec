@@ -6,5 +6,6 @@ dist/
 .settings/
 .project
 .pydevproject
+.vagrant/
 
 docs/_build
