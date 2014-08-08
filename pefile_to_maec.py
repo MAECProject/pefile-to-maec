@@ -6,6 +6,7 @@ __version__ = '0.1.0a1'
 import argparse
 import sys
 import os
+from copy import deepcopy
 try:
     import pefile
 except ImportError:
@@ -96,35 +97,63 @@ class PefileParser(object):
         self.pefile_dict = {}
         self.handle_pefile_object()
 
+    # Build a nested dictionary from a list
+    # Set it to a value
+    def build_nested_dictionary(self, child_list, value):
+        nested_dict = {}
+        if len(child_list) == 1:
+            nested_dict[child_list[0]] = value
+            return nested_dict
+
+        for list_item in child_list:
+            next_index = child_list.index(list_item) + 1
+            nested_dict[list_item] = self.build_nested_dictionary(child_list[next_index:], value)
+            break
+
+        return nested_dict
+
+    # Function for merging multiple dictionaries
+    def dict_merge(self, target, *args):
+      # Merge multiple dicts
+      if len(args) > 1:
+        for obj in args:
+         self.dict_merge(target, obj)
+        return target
+
+      # Recursively merge dicts and set non-dict values
+      obj = args[0]
+      if not isinstance(obj, dict):
+        return obj
+      for k, v in obj.iteritems():
+        if k in target and isinstance(target[k], dict):
+          self.dict_merge(target[k], v)
+        else:
+          target[k] = deepcopy(v)
+      return target
+
+    def set_dictionary_value(self, dictionary, key, value):
+        if '/' in key:
+            split_names = key.split('/')
+            if split_names[0] not in dictionary:
+                dictionary[split_names[0]] = self.build_nested_dictionary(split_names[1:], value)
+            else:
+                self.dict_merge(dictionary[split_names[0]], self.build_nested_dictionary(split_names[1:], value))
+        else:
+            dictionary[key] = value
+
     def perform_mapping(self, struct_dict, object_mapping_dict):
         output_dict = {}
         for key, value in struct_dict.items():
-            if key in object_mapping_dict.keys():
+            if key in object_mapping_dict:
                 if isinstance(object_mapping_dict[key], str):
-                    output_dict[object_mapping_dict[key]] = str(struct_dict[key])
-                elif isinstance(object_mapping_dict[key], dict):
-                    mapping_dict = object_mapping_dict[key]
-                    if 'Value' in mapping_dict:
-                        child_value = mapping_dict['Value']
-                        if child_value:
-                            output_dict[mapping_dict['mapping']] = str(child_value.strip())
+                    self.set_dictionary_value(output_dict, object_mapping_dict[key], struct_dict[key])
+            if isinstance(value, dict):
+                mapping_dict = object_mapping_dict[key]
+                for k,v in value.items():
+                    if k == 'Value':
+                        child_value = v
+                        self.set_dictionary_value(output_dict, mapping_dict, str(child_value).strip())
 
-        pprint(output_dict)
-        return output_dict
-
-    def old_perform_mapping(self, struct_instance, object_mapping_dict):
-        output_dict = {}
-        for key, value in struct_instance.dump_dict().items():
-            if key in object_mapping_dict.keys():
-                if isinstance(object_mapping_dict[key], str):
-                    output_dict[object_mapping_dict[key]] = str(getattr(struct_instance, key))
-                elif isinstance(object_mapping_dict[key], dict):
-                    mapping_dict = object_mapping_dict[key]
-                    # Handle any fields from which the value must be extracted
-                    if 'Value' in mapping_dict:
-                        child_value = mapping_dict['Value']
-                        if child_value:
-                            output_dict[mapping_dict['mapping']] = str(child_value.strip())
         return output_dict
 
     def process_headers(self):
