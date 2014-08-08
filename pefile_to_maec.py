@@ -159,10 +159,14 @@ class PefileParser(object):
 
     def process_headers(self):
         headers_dict = {}
+
         struct_dos_dict = self.pe.DOS_HEADER.dump_dict
         struct_file_dict = self.pe.FILE_HEADER.dump_dict
+        struct_optional32_dict = self.pe.OPTIONAL_HEADER.dump_dict
+
         headers_dict['dos_header'] = self.perform_mapping(struct_dos_dict(), IMAGE_DOS_HEADER_MAPPINGS)
         headers_dict['file_header'] = self.perform_mapping(struct_file_dict(), IMAGE_FILE_HEADER_MAPPINGS)
+        headers_dict['optional_header'] = self.perform_mapping(struct_optional32_dict(), IMAGE_OPTIONAL_HEADER32_MAPPINGS)
         return headers_dict
 
     def handle_pefile_object(self):
