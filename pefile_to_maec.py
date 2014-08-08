@@ -23,6 +23,7 @@ except ImportError:
 from pprint import pprint
 
 from mappings.image_dos_header import IMAGE_DOS_HEADER_MAPPINGS
+from mappings.image_file_header import IMAGE_FILE_HEADER_MAPPINGS
 from mappings.image_optional_header import IMAGE_OPTIONAL_HEADER32_MAPPINGS
 from mappings.image_sections import IMAGE_SECTION_HEADER_MAPPINGS
 import maec.utils
@@ -158,8 +159,10 @@ class PefileParser(object):
 
     def process_headers(self):
         headers_dict = {}
-        struct_dict = self.pe.DOS_HEADER.dump_dict
-        headers_dict['dos_header'] = self.perform_mapping(struct_dict(), IMAGE_DOS_HEADER_MAPPINGS)
+        struct_dos_dict = self.pe.DOS_HEADER.dump_dict
+        struct_file_dict = self.pe.FILE_HEADER.dump_dict
+        headers_dict['dos_header'] = self.perform_mapping(struct_dos_dict(), IMAGE_DOS_HEADER_MAPPINGS)
+        headers_dict['file_header'] = self.perform_mapping(struct_file_dict(), IMAGE_FILE_HEADER_MAPPINGS)
         return headers_dict
 
     def handle_pefile_object(self):
