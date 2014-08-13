@@ -19,11 +19,11 @@ pefile_struct:  __IMAGE_FILE_HEADER_format__
 cybox_struct:   PEFileHeaderType
 
 """
-IMAGE_FILE_HEADER_MAPPINGS = {'Machine':'headers/file_header/machine',
-                              'NumberOfSections':'headers/file_header/number_of_sections',
-                              'TimeDateStamp':'headers/file_header/time_date_stamp',
-                              'PointerToSymbolTable':'headers/file_header/pointer_to_symbol_table',
-                              'NumberOfSymbols':'headers/file_header/number_of_symbols',
-                              'SizeOfOptionalHeader':'headers/file_header/size_of_optional_header',
-                              'Characteristics':'headers/file_header/characteristics'}
+IMAGE_FILE_HEADER_MAPPINGS = {'Machine':'machine',
+                              'NumberOfSections':'number_of_sections',
+                              'TimeDateStamp':'time_date_stamp',
+                              'PointerToSymbolTable':'pointer_to_symbol_table',
+                              'NumberOfSymbols':'number_of_symbols',
+                              'SizeOfOptionalHeader':'size_of_optional_header',
+                              'Characteristics':'characteristics'}
 
