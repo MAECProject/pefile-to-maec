@@ -3,16 +3,21 @@ include user::virtual
 include user::developers
 
 class { 'baseconfig':
-  stage => 'pre'
+  stage => 'pre_install'
 }
 
 class { 'ubuntu':
-  require => Stage['pre']
+  stage => 'base_install'
+}
+
+class { 'pip':
+  stage => 'python_prep'
 }
 
 class { [
-  'pip',
-    stage => 'post'
+  'cybox',
+  'maec']:
+    stage => 'custom_install'
 }
 
 File {
@@ -21,4 +26,4 @@ File {
   mode  => '0644',
 }
 
-include baseconfig, ubuntu, pip
+include baseconfig, ubuntu, pip, cybox, maec

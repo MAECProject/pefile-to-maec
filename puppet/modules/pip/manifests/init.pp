@@ -1,13 +1,11 @@
 class pip {
   package { [
-  'virtualenv',
-  'virtualenvwrapper',
   'ipython',
+  'numpy',
   'pandas',
-  'cybox',
-  'maec']:
-    ensure   => installed,
-    provider => pip;
+  'lxml']:
+    provider => pip,
+    ensure   => present;
   }
 }
 
