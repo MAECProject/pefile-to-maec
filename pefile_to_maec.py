@@ -43,7 +43,7 @@ from cybox.common.tools import ToolInformation
 class PefileToMAEC(object):
     def __init__(self, pefile_parser):
         self.pefile_parser = pefile_parser
-        NS = Namespace("http://code.google.com/p/pefile/", "EroCarrera")
+        NS = Namespace("http://code.google.com/p/pefile/", "pefile")
         maec.utils.set_id_namespace(NS)
         self.package = Package()
         self.generate_maec()
@@ -194,5 +194,5 @@ if __name__ == '__main__':
     # Instantiate the MAEC translator and perform the translation
     maec_translator = PefileToMAEC(parser)
     # Output the MAEC Package (generated from pefile output) as XML
-    maec_translator.package.to_xml_file(args.output, {"http://code.google.com/p/pefile/":"EroCarrera"})
+    maec_translator.package.to_xml_file(args.output, {"http://code.google.com/p/pefile/":"pefile"})
 
