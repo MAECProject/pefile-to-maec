@@ -26,6 +26,7 @@ from mappings.image_dos_header import IMAGE_DOS_HEADER_MAPPINGS
 from mappings.image_file_header import IMAGE_FILE_HEADER_MAPPINGS
 from mappings.image_optional_header import IMAGE_OPTIONAL_HEADER32_MAPPINGS
 from mappings.image_sections import IMAGE_SECTION_HEADER_MAPPINGS
+from mappings.file_object import file_object_mappings
 import maec.utils
 from maec.bundle.bundle import Bundle
 from maec.bundle.behavior import Behavior
@@ -53,8 +54,15 @@ class PefileToMAEC(object):
         return object_dict
 
     def populate(self, entry_dict, static_bundle, malware_subject=None):
-        object_dict = self.create_object_dict(entry_dict)
-        static_bundle.add_object(Object.from_dict(object_dict))
+        if 'file' in entry_dict and len(entry_dict['file'].keys()) > 1:
+            file_dict = self.create_object_dict(entry_dict['file'])
+            if malware_subject:
+                malware_subject.malware_instance_object_attributes = Object.from_dict(file_dict)
+            else:
+                static_bundle.add_object(Object.from_dict(file_dict))
+        if 'pe' in entry_dict and len(entry_dict['pe'].keys()) > 1:
+            pe_dict = self.create_object_dict(entry_dict['pe'])
+            static_bundle.add_object(Object.from_dict(pe_dict))
 
     def generate_analysis(self, static_bundle):
         analysis = Analysis()
@@ -79,7 +87,7 @@ class PefileToMAEC(object):
         return False
 
     def generate_malware_subjects(self):
-        entry_dict = self.pefile_parser.pefile_dict
+        entry_dict = self.pefile_parser.entry_dict
         malware_subject = MalwareSubject()
         entry_dict['id'] = malware_subject
         static_bundle = Bundle(None, False, '4.1', 'static analysis tool output')
@@ -95,8 +103,8 @@ class PefileToMAEC(object):
 class PefileParser(object):
     def __init__(self, pe):
         self.pe = pe
-        self.pefile_dict = {}
-        self.handle_pefile_object()
+        self.entry_dict = {}
+        self.process_entry()
 
     # Build a nested dictionary from a list
     # Set it to a value
@@ -157,23 +165,27 @@ class PefileParser(object):
 
         return output_dict
 
-    def process_headers(self):
-        headers_dict = {}
-
-        struct_dos_dict = self.pe.DOS_HEADER.dump_dict
-        struct_file_dict = self.pe.FILE_HEADER.dump_dict
-        struct_optional32_dict = self.pe.OPTIONAL_HEADER.dump_dict
-
-        headers_dict['dos_header'] = self.perform_mapping(struct_dos_dict(), IMAGE_DOS_HEADER_MAPPINGS)
-        headers_dict['file_header'] = self.perform_mapping(struct_file_dict(), IMAGE_FILE_HEADER_MAPPINGS)
-        headers_dict['optional_header'] = self.perform_mapping(struct_optional32_dict(), IMAGE_OPTIONAL_HEADER32_MAPPINGS)
-        return headers_dict
-
     def handle_pefile_object(self):
-        self.pefile_dict = {'xsi:type':'WindowsExecutableFileObjectType'}
-        self.pefile_dict['headers'] = {}
-        self.pefile_dict['headers'] = self.process_headers()
+        pe_file_dictionary = {'xsi:type': 'WindowsExecutableFileObjectType'}
+        pe_file_dictionary['headers'] = {}
 
+        pe_file_dictionary['headers']['dos_header'] = self.perform_mapping(self.pe.DOS_HEADER.dump_dict(), IMAGE_DOS_HEADER_MAPPINGS)
+        pe_file_dictionary['headers']['file_header'] = self.perform_mapping(self.pe.FILE_HEADER.dump_dict(), IMAGE_FILE_HEADER_MAPPINGS)
+        pe_file_dictionary['headers']['optional_header'] = self.perform_mapping(self.pe.OPTIONAL_HEADER.dump_dict(), IMAGE_OPTIONAL_HEADER32_MAPPINGS)
+
+        return pe_file_dictionary
+
+    def handle_file_object(self):
+        file_dictionary = {}
+        file_dictionary['xsi:type'] = 'FileObjectType'
+        file_dictionary['file_name']= 'PE.exe'
+        file_dictionary['size_in_bytes'] = int('999999')
+
+        return file_dictionary
+
+    def process_entry(self):
+        self.entry_dict['file'] = self.handle_file_object()
+        self.entry_dict['pe'] = self.handle_pefile_object()
 
 if __name__ == '__main__':
 
