@@ -36,6 +36,7 @@ from maec.bundle.bundle_reference import BundleReference
 from maec.package.analysis import Analysis
 from maec.package.malware_subject import MalwareSubject, MalwareSubjectRelationshipList
 from maec.package.package import Package
+import cybox
 from cybox.utils import Namespace
 from cybox.core import AssociatedObjects, AssociatedObject, Object, AssociationType, RelatedObject
 from cybox.common.tools import ToolInformation
@@ -48,6 +49,7 @@ class PefileToMAEC(object):
         self.pefile_parser = pefile_parser
         NS = Namespace("http://code.google.com/p/pefile/", "pefile")
         maec.utils.set_id_namespace(NS)
+        cybox.utils.set_id_namespace(NS)
         self.package = Package()
         self.generate_maec()
 
