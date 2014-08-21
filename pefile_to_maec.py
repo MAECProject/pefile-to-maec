@@ -28,6 +28,7 @@ from mappings.image_file_header import IMAGE_FILE_HEADER_MAPPINGS
 from mappings.image_optional_header import IMAGE_OPTIONAL_HEADER32_MAPPINGS
 from mappings.image_sections import IMAGE_SECTION_HEADER_MAPPINGS
 import maec.utils
+from maec.utils import Namespace
 from maec.bundle.bundle import Bundle
 from maec.bundle.behavior import Behavior
 from maec.bundle.malware_action import MalwareAction
@@ -36,8 +37,6 @@ from maec.bundle.bundle_reference import BundleReference
 from maec.package.analysis import Analysis
 from maec.package.malware_subject import MalwareSubject, MalwareSubjectRelationshipList
 from maec.package.package import Package
-import cybox
-from cybox.utils import Namespace
 from cybox.core import AssociatedObjects, AssociatedObject, Object, AssociationType, RelatedObject
 from cybox.common.tools import ToolInformation
 from cybox.objects.file_object import File
@@ -49,7 +48,6 @@ class PefileToMAEC(object):
         self.pefile_parser = pefile_parser
         NS = Namespace("http://code.google.com/p/pefile/", "pefile")
         maec.utils.set_id_namespace(NS)
-        cybox.utils.set_id_namespace(NS)
         self.package = Package()
         self.generate_maec()
 
