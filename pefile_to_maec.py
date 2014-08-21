@@ -1,7 +1,7 @@
 # -*- coding: Latin-1 -*-
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 
-__version__ = '0.1.0a1'
+__version__ = '0.1.0a3'
 
 import argparse
 import sys
@@ -28,6 +28,7 @@ from mappings.image_file_header import IMAGE_FILE_HEADER_MAPPINGS
 from mappings.image_optional_header import IMAGE_OPTIONAL_HEADER32_MAPPINGS
 from mappings.image_sections import IMAGE_SECTION_HEADER_MAPPINGS
 import maec.utils
+from maec.utils import Namespace
 from maec.bundle.bundle import Bundle
 from maec.bundle.behavior import Behavior
 from maec.bundle.malware_action import MalwareAction
@@ -36,8 +37,6 @@ from maec.bundle.bundle_reference import BundleReference
 from maec.package.analysis import Analysis
 from maec.package.malware_subject import MalwareSubject, MalwareSubjectRelationshipList
 from maec.package.package import Package
-import cybox
-from cybox.utils import Namespace
 from cybox.core import AssociatedObjects, AssociatedObject, Object, AssociationType, RelatedObject
 from cybox.common.tools import ToolInformation
 from cybox.objects.file_object import File
@@ -49,7 +48,6 @@ class PefileToMAEC(object):
         self.pefile_parser = pefile_parser
         NS = Namespace("http://code.google.com/p/pefile/", "pefile")
         maec.utils.set_id_namespace(NS)
-        cybox.utils.set_id_namespace(NS)
         self.package = Package()
         self.generate_maec()
 
@@ -58,18 +56,12 @@ class PefileToMAEC(object):
         return object_dict
 
     def populate(self, entry_dict, static_bundle, malware_subject=None):
-        file_object = Object()
-        file_object.properties = File()
-        file_object.properties.file_name = os.path.basename(self.pefile_parser.rel_path)
-        file_object.properties.file_path = os.path.abspath(self.pefile_parser.rel_path)
-        file_object.properties.size_in_bytes = os.path.getsize(self.pefile_parser.rel_path)
-        with open(self.pefile_parser.rel_path, 'rb') as fn:
-            data = fn.read()
-        if data:
-            md5_hash = hashlib.md5(data).hexdigest()
-        file_object.properties.hashes = HashList()
-        file_object.properties.hashes.append(md5_hash)
-        malware_subject.set_malware_instance_object_attributes(file_object)
+        if 'file' in entry_dict and len(entry_dict['file'].keys()) > 1:
+            file_dict = self.create_object_dict(entry_dict['file'])
+            if malware_subject:
+                malware_subject.malware_instance_object_attributes = Object.from_dict(file_dict)
+            else:
+                static_bundle.add_object(Object.from_dict(file_dict))
         if 'pe' in entry_dict and len(entry_dict['pe'].keys()) > 1:
             pe_dict = self.create_object_dict(entry_dict['pe'])
             static_bundle.add_object(Object.from_dict(pe_dict))
@@ -111,8 +103,9 @@ class PefileToMAEC(object):
         self.generate_malware_subjects()
 
 class PefileParser(object):
-    def __init__(self, rel_path):
-        self.rel_path = rel_path
+    def __init__(self, infile):
+        self.infile = infile
+        self.root_entry = None
         self.entry_dict = {}
         self.process_entry()
 
@@ -175,25 +168,50 @@ class PefileParser(object):
 
         return output_dict
 
-    def handle_pefile_object(self, pe):
-        pe_file_dictionary = {'xsi:type': 'WindowsExecutableFileObjectType'}
-        pe_file_dictionary['headers'] = {}
+    def handle_input_file(self):
+        try:
+            self.root_entry = pefile.PE(self.infile, fast_load=True)
+        except pefile.PEFormatError:
+            return None
 
-        pe_file_dictionary['headers']['dos_header'] = self.perform_mapping(pe.DOS_HEADER.dump_dict(), IMAGE_DOS_HEADER_MAPPINGS)
-        pe_file_dictionary['headers']['file_header'] = self.perform_mapping(pe.FILE_HEADER.dump_dict(), IMAGE_FILE_HEADER_MAPPINGS)
-        pe_file_dictionary['headers']['optional_header'] = self.perform_mapping(pe.OPTIONAL_HEADER.dump_dict(), IMAGE_OPTIONAL_HEADER32_MAPPINGS)
+    def handle_file_object(self):
+        file_dictionary = {}
+        file_dictionary['xsi:type'] = 'FileObjectType'
+        file_dictionary['file_name'] = os.path.basename(self.infile)
+        file_dictionary['file_path'] = os.path.abspath(self.infile)
+        file_dictionary['size_in_bytes'] = os.path.getsize(self.infile)
 
-        return pe_file_dictionary
+        return file_dictionary
+
+    def parse_headers(self):
+        headers_dictionary = {}
+        headers_dictionary['dos_header'] = self.perform_mapping(
+                self.root_entry.DOS_HEADER.dump_dict(),
+                IMAGE_DOS_HEADER_MAPPINGS)
+        headers_dictionary['file_header'] = self.perform_mapping(
+                self.root_entry.FILE_HEADER.dump_dict(),
+                IMAGE_FILE_HEADER_MAPPINGS)
+        headers_dictionary['optional_header'] = self.perform_mapping(
+                self.root_entry.OPTIONAL_HEADER.dump_dict(),
+                IMAGE_OPTIONAL_HEADER32_MAPPINGS)
+
+        return headers_dictionary
+
+    def handle_pe_object(self):
+        pe_dictionary = {'xsi:type': 'WindowsExecutableFileObjectType'}
+        pe_dictionary['headers'] = self.parse_headers()
+
+        return pe_dictionary
 
     def process_entry(self):
-        # Open the input file and instantiate pefile.PE
-        try:
-            pe = pefile.PE(self.rel_path, fast_load=True)
-        except pefile.PEFormatError as err:
-            print err.message
-            sys.exit(-1)
+        self.handle_input_file()
 
-        self.entry_dict['pe'] = self.handle_pefile_object(pe)
+        if self.root_entry:
+            self.entry_dict['file'] = self.handle_file_object()
+            self.entry_dict['pe'] = self.handle_pe_object()
+        else:
+            print 'Error: Not a valid PE file.'
+            sys.exit(-1)
 
 if __name__ == '__main__':
 
