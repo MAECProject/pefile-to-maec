@@ -60,6 +60,13 @@ class PefileToMAEC(object):
             file_dict = self.create_object_dict(entry_dict['file'])
             if malware_subject:
                 malware_subject.malware_instance_object_attributes = Object.from_dict(file_dict)
+                # Add the hashes for the Malware Instance Object Attributes
+                data = open(self.pefile_parser.infile, 'rb').read()
+                if data:
+                    md5_hash = hashlib.md5(data).hexdigest()
+                    sha1_hash = hashlib.sha1(data).hexdigest()
+                    malware_subject.malware_instance_object_attributes.properties.add_hash(md5_hash)
+                    malware_subject.malware_instance_object_attributes.properties.add_hash(sha1_hash)
             else:
                 static_bundle.add_object(Object.from_dict(file_dict))
         if 'pe' in entry_dict and len(entry_dict['pe'].keys()) > 1:
