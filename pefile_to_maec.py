@@ -200,12 +200,32 @@ class PefileParser(object):
 
         return headers_dictionary
 
+    def get_hash_list(self, item):
+        hash_list = []
+        hash_methods = [
+                item.get_hash_md5(),
+                item.get_hash_sha1(),
+                item.get_hash_sha256(),
+                item.get_hash_sha512()]
+        for hash_method in hash_methods:
+            hash_list.append(hash_method)
+
+        return hash_list
+
+    def get_entropy(self, item):
+        entropy_dict = {}
+        entropy_dict['value'] = item.get_entropy()
+
+        return entropy_dict
+
     def parse_sections(self):
         sections_list = []
         for section in self.root_entry.sections:
             section_dict = {}
             section_dict = self.perform_mapping(section.dump_dict(),
                     IMAGE_SECTION_HEADER_MAPPINGS)
+            section_dict['data_hashes'] = self.get_hash_list(section)
+            section_dict['entropy'] = self.get_entropy(section)
             sections_list.append(section_dict)
 
         return sections_list
