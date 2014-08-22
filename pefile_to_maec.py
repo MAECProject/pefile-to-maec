@@ -153,21 +153,24 @@ class PefileParser(object):
         else:
             dictionary[key] = value
 
-    def perform_mapping(self, struct_dict, object_mapping_dict):
+    def perform_mapping(self, struct_dict, element_mapping_dict):
         output_dict = {}
         for key, value in struct_dict.items():
-            if key in object_mapping_dict:
-                if isinstance(object_mapping_dict[key], str):
-                    self.set_dictionary_value(output_dict, object_mapping_dict[key], struct_dict[key])
-            if isinstance(value, dict):
-                mapping_dict = object_mapping_dict[key]
-                for k,v in value.items():
-                    if k == 'Value':
-                        child_value = v
-                        self.set_dictionary_value(output_dict, mapping_dict, str(child_value).strip())
+            if key in element_mapping_dict:
+                if isinstance(value, str):
+                    self.set_dictionary_value(output_dict, element_mapping_dict[key], value)
+                elif isinstance(value, dict):
+                    for k,v in value.items():
+                        if k == 'Value':
+                            self.set_dictionary_value(output_dict,
+                                    element_mapping_dict[key], value[k])
 
         return output_dict
 
+    def perform_mappings(self, element_list, element_mapping_dict):
+        output_dict = {}
+        for element in element_list:
+            print element
     def handle_input_file(self):
         try:
             self.root_entry = pefile.PE(self.infile, fast_load=True)
@@ -197,9 +200,20 @@ class PefileParser(object):
 
         return headers_dictionary
 
+    def parse_sections(self):
+        sections_list = []
+        for section in self.root_entry.sections:
+            section_dict = {}
+            section_dict = self.perform_mapping(section.dump_dict(),
+                    IMAGE_SECTION_HEADER_MAPPINGS)
+            sections_list.append(section_dict)
+
+        return sections_list
+
     def handle_pe_object(self):
         pe_dictionary = {'xsi:type': 'WindowsExecutableFileObjectType'}
         pe_dictionary['headers'] = self.parse_headers()
+        pe_dictionary['sections'] = self.parse_sections()
 
         return pe_dictionary
 
