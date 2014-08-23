@@ -27,6 +27,7 @@ from mappings.image_dos_header import IMAGE_DOS_HEADER_MAPPINGS
 from mappings.image_file_header import IMAGE_FILE_HEADER_MAPPINGS
 from mappings.image_optional_header import IMAGE_OPTIONAL_HEADER32_MAPPINGS
 from mappings.image_sections import IMAGE_SECTION_HEADER_MAPPINGS
+from mappings.image_imports import IMAGE_IMPORT_MAPPINGS
 import maec.utils
 from maec.utils import Namespace
 from maec.bundle.bundle import Bundle
@@ -164,6 +165,12 @@ class PefileParser(object):
                         if k == 'Value':
                             self.set_dictionary_value(output_dict,
                                     element_mapping_dict[key], value[k])
+                elif isinstance(value, list):
+                    for entry in value:
+                        for k,v in entry.items():
+                            if k == 'Value':
+                                self.set_dictionary_value(output_dict,
+                                        element_mapping_dict[key], entry[k])
 
         return output_dict
 
@@ -230,10 +237,37 @@ class PefileParser(object):
 
         return sections_list
 
+    def load_data_directories(self):
+        self.root_entry.parse_data_directories( directories=[
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_IMPORT'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_EXPORT'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_RESOURCE'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_DEBUG'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_TLS'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT'] ] )
+
+    def parse_import_directory(self):
+        imports_list = []
+
+        for entry in self.root_entry.DIRECTORY_ENTRY_IMPORT:
+            library_dictionary = {}
+            api_list = []
+            library_dictionary['file_name'] = entry.dll
+            library_dictionary['imported_functions'] = api_list
+            for imp in entry.imports:
+                api_list.append({'function_name': imp.name})
+            imports_list.append(library_dictionary)
+
+        return imports_list
+
     def handle_pe_object(self):
         pe_dictionary = {'xsi:type': 'WindowsExecutableFileObjectType'}
         pe_dictionary['headers'] = self.parse_headers()
         pe_dictionary['sections'] = self.parse_sections()
+        
+        self.load_data_directories()
+        pe_dictionary['imports'] = self.parse_import_directory()
 
         return pe_dictionary
 
