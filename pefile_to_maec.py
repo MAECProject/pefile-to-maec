@@ -261,13 +261,28 @@ class PefileParser(object):
 
         return imports_list
 
+    def parse_export_directory(self):
+        exports_list = []
+
+        for entry in self.root_entry.DIRECTORY_ENTRY_EXPORT.symbols:
+            library_dictionary = {}
+            api_list = []
+            library_dictionary['file_name'] = entry.name
+            exports_list.append(library_dictionary)
+
+        return exports_list
+
     def handle_pe_object(self):
         pe_dictionary = {'xsi:type': 'WindowsExecutableFileObjectType'}
         pe_dictionary['headers'] = self.parse_headers()
         pe_dictionary['sections'] = self.parse_sections()
         
         self.load_data_directories()
-        pe_dictionary['imports'] = self.parse_import_directory()
+        if hasattr(self.root_entry, 'DIRECTORY_ENTRY_IMPORT'):
+            pe_dictionary['imports'] = self.parse_import_directory()
+
+        if hasattr(self.root_entry, 'DIRECTORY_ENTRY_EXPORT'):
+            pe_dictionary['exports'] = self.parse_export_directory()
 
         return pe_dictionary
 
