@@ -27,7 +27,6 @@ from mappings.image_dos_header import IMAGE_DOS_HEADER_MAPPINGS
 from mappings.image_file_header import IMAGE_FILE_HEADER_MAPPINGS
 from mappings.image_optional_header import IMAGE_OPTIONAL_HEADER32_MAPPINGS
 from mappings.image_sections import IMAGE_SECTION_HEADER_MAPPINGS
-from mappings.image_imports import IMAGE_IMPORT_MAPPINGS
 import maec.utils
 from maec.utils import Namespace
 from maec.bundle.bundle import Bundle
@@ -76,7 +75,7 @@ class PefileToMAEC(object):
                 'name': 'pefile'}))
         findings_bundle_reference = []
         if self.bundle_has_content(static_bundle):
-            findings_bundle_reference.append(BundleReference.from_dict({'bundle_idref':static_bundle.id}))
+            findings_bundle_reference.append(BundleReference.from_dict({'bundle_idref':static_bundle.id_}))
         analysis.findings_bundle_reference = findings_bundle_reference
         return analysis
 
