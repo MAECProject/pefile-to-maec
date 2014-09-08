@@ -271,6 +271,20 @@ class PefileParser(object):
 
         return exports_list
 
+    def handle_resources(self):
+        resource_list = []
+
+        for entry in self.root_entry.DIRECTORY_ENTRY_RESOURCE.entries:
+            entry_dict = {}
+            if hasattr(entry, 'name') and entry.name:
+                entry_dict['name'] = str(entry.name)
+            elif hasattr(entry, 'id') and entry.id:
+                entry_dict['name'] = pefile.RESOURCE_TYPE[entry.id]
+            resource_list.append(entry_dict)
+
+        return resource_list
+
+
     def handle_pe_object(self):
         pe_dictionary = {'xsi:type': 'WindowsExecutableFileObjectType'}
         pe_dictionary['headers'] = self.parse_headers()
@@ -282,6 +296,9 @@ class PefileParser(object):
 
         if hasattr(self.root_entry, 'DIRECTORY_ENTRY_EXPORT'):
             pe_dictionary['exports'] = self.parse_export_directory()
+
+        if hasattr(self.root_entry, 'DIRECTORY_ENTRY_RESOURCE'):
+            pe_dictionary['resources'] = self.handle_resources()
 
         return pe_dictionary
 
