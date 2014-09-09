@@ -82,7 +82,7 @@ class PefileToMAEC(object):
                 'name': 'pefile'}))
         findings_bundle_reference = []
         if self.bundle_has_content(static_bundle):
-            findings_bundle_reference.append(BundleReference.from_dict({'bundle_idref':static_bundle.id}))
+            findings_bundle_reference.append(BundleReference.from_dict({'bundle_idref':static_bundle.id_}))
         analysis.findings_bundle_reference = findings_bundle_reference
         return analysis
 
@@ -171,6 +171,12 @@ class PefileParser(object):
                         if k == 'Value':
                             self.set_dictionary_value(output_dict,
                                     element_mapping_dict[key], value[k])
+                elif isinstance(value, list):
+                    for entry in value:
+                        for k,v in entry.items():
+                            if k == 'Value':
+                                self.set_dictionary_value(output_dict,
+                                        element_mapping_dict[key], entry[k])
 
         return output_dict
 
@@ -237,10 +243,69 @@ class PefileParser(object):
 
         return sections_list
 
+    def load_data_directories(self):
+        self.root_entry.parse_data_directories( directories=[
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_IMPORT'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_EXPORT'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_RESOURCE'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_DEBUG'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_TLS'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT'],
+            pefile.DIRECTORY_ENTRY['IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT'] ] )
+
+    def parse_import_directory(self):
+        imports_list = []
+
+        for entry in self.root_entry.DIRECTORY_ENTRY_IMPORT:
+            library_dictionary = {}
+            api_list = []
+            library_dictionary['file_name'] = entry.dll
+            library_dictionary['imported_functions'] = api_list
+            for imp in entry.imports:
+                api_list.append({'function_name': imp.name})
+            imports_list.append(library_dictionary)
+
+        return imports_list
+
+    def parse_export_directory(self):
+        exports_list = []
+
+        for entry in self.root_entry.DIRECTORY_ENTRY_EXPORT.symbols:
+            library_dictionary = {}
+            api_list = []
+            library_dictionary['file_name'] = entry.name
+            exports_list.append(library_dictionary)
+
+        return exports_list
+
+    def handle_resources(self):
+        resource_list = []
+
+        for entry in self.root_entry.DIRECTORY_ENTRY_RESOURCE.entries:
+            entry_dict = {}
+            if hasattr(entry, 'name') and entry.name:
+                entry_dict['name'] = str(entry.name)
+            elif hasattr(entry, 'id') and entry.id:
+                entry_dict['name'] = pefile.RESOURCE_TYPE[entry.id]
+            resource_list.append(entry_dict)
+
+        return resource_list
+
+
     def handle_pe_object(self):
         pe_dictionary = {'xsi:type': 'WindowsExecutableFileObjectType'}
         pe_dictionary['headers'] = self.parse_headers()
         pe_dictionary['sections'] = self.parse_sections()
+        
+        self.load_data_directories()
+        if hasattr(self.root_entry, 'DIRECTORY_ENTRY_IMPORT'):
+            pe_dictionary['imports'] = self.parse_import_directory()
+
+        if hasattr(self.root_entry, 'DIRECTORY_ENTRY_EXPORT'):
+            pe_dictionary['exports'] = self.parse_export_directory()
+
+        if hasattr(self.root_entry, 'DIRECTORY_ENTRY_RESOURCE'):
+            pe_dictionary['resources'] = self.handle_resources()
 
         return pe_dictionary
 
