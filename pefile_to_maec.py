@@ -28,7 +28,6 @@ from mappings.image_file_header import IMAGE_FILE_HEADER_MAPPINGS
 from mappings.image_optional_header import IMAGE_OPTIONAL_HEADER32_MAPPINGS
 from mappings.image_sections import IMAGE_SECTION_HEADER_MAPPINGS
 import maec.utils
-from maec.utils import Namespace
 from maec.bundle.bundle import Bundle
 from maec.bundle.behavior import Behavior
 from maec.bundle.malware_action import MalwareAction
@@ -41,6 +40,7 @@ from cybox.core import AssociatedObjects, AssociatedObject, Object, AssociationT
 from cybox.common.tools import ToolInformation
 from cybox.objects.file_object import File
 from cybox.common import Hash, HashList
+from cybox.utils import Namespace
 
 
 class PefileToMAEC(object):
