@@ -1,7 +1,7 @@
 # -*- coding: Latin-1 -*-
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 
-__version__ = '0.1.0a3'
+__version__ = '0.1.0b1'
 
 import argparse
 import sys
