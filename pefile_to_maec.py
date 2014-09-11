@@ -278,8 +278,31 @@ class PefileParser(object):
             entry_dict = {}
             if hasattr(entry, 'name') and entry.name:
                 entry_dict['name'] = str(entry.name)
+                if hasattr(entry, 'directory'):
+                    if hasattr(entry.directory, 'entries'):
+                        for child_entry in entry.directory.entries:
+                            if hasattr(child_entry, 'directory'):
+                                if hasattr(child_entry.directory, 'entries'):
+                                    for grandchild in child_entry.directory.entries:
+                                        if hasattr(grandchild, 'data'):
+                                            entry_dict['language'] = pefile.LANG[grandchild.data.lang]
+                                            entry_dict['sub_language'] = pefile.SUBLANG[grandchild.data.sublang][0]
+                                            entry_dict['size'] = grandchild.data.struct.Size
             elif hasattr(entry, 'id') and entry.id:
-                entry_dict['name'] = pefile.RESOURCE_TYPE[entry.id]
+                entry_dict['type'] = pefile.RESOURCE_TYPE[entry.id]
+                if hasattr(entry, 'directory'):
+                    if hasattr(entry.directory, 'entries'):
+                        for child_entry in entry.directory.entries:
+                            if hasattr(child_entry, 'name') and child_entry.name:
+                                entry_dict['name'] = str(child_entry.name)
+                            if hasattr(child_entry, 'directory'):
+                                if hasattr(child_entry.directory, 'entries'):
+                                    for grandchild in child_entry.directory.entries:
+                                        if hasattr(grandchild, 'data'):
+                                            entry_dict['language'] = pefile.LANG[grandchild.data.lang]
+                                            entry_dict['sub_language'] = pefile.SUBLANG[grandchild.data.sublang][0]
+                                            entry_dict['size'] = grandchild.data.struct.Size
+
             resource_list.append(entry_dict)
 
         return resource_list
