@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<maecPackage:MAEC_Package 
+	xmlns:pefile="http://code.google.com/p/pefile/"
+	xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
+	xmlns:cybox="http://cybox.mitre.org/cybox-2"
+	xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
+	xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2"
+	xmlns:WinExecutableFileObj="http://cybox.mitre.org/objects#WinExecutableFileObject-2"
+	xmlns:WinFileObj="http://cybox.mitre.org/objects#WinFileObject-2"
+	xmlns:maecBundle="http://maec.mitre.org/XMLSchema/maec-bundle-4"
+	xmlns:maecPackage="http://maec.mitre.org/XMLSchema/maec-package-2"
+	xmlns:maecVocabs="http://maec.mitre.org/default_vocabularies-1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#FileObject-2 http://cybox.mitre.org/XMLSchema/objects/File/2.1/File_Object.xsd http://cybox.mitre.org/objects#WinExecutableFileObject-2 http://cybox.mitre.org/XMLSchema/objects/Win_Executable_File/2.1/Win_Executable_File_Object.xsd http://cybox.mitre.org/objects#WinFileObject-2 http://cybox.mitre.org/XMLSchema/objects/Win_File/2.1/Win_File_Object.xsd http://maec.mitre.org/XMLSchema/maec-bundle-4 http://maec.mitre.org/language/version4.1/maec_bundle_schema.xsd http://maec.mitre.org/XMLSchema/maec-package-2 http://maec.mitre.org/language/version4.1/maec_package_schema.xsd http://maec.mitre.org/default_vocabularies-1 http://maec.mitre.org/language/version4.1/maec_default_vocabularies.xsd" id="pefile:package-5b921f92-f218-4f07-a1f7-b0302c0efd0f" schema_version="2.1">
+    <maecPackage:Malware_Subjects>
+        <maecPackage:Malware_Subject id="pefile:malware_subject-21a65041-6201-405a-8787-6901f37b59fe">
+            <maecPackage:Malware_Instance_Object_Attributes id="pefile:object-87a41663-58fc-4572-9496-902a657b66e9">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                    <FileObj:File_Name>TodoClassification.dll</FileObj:File_Name>
+                    <FileObj:File_Path>/vagrant/samples/TodoClassification.dll</FileObj:File_Path>
+                    <FileObj:Size_In_Bytes>14336</FileObj:Size_In_Bytes>
+                    <FileObj:Hashes>
+                        <cyboxCommon:Hash>
+                            <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                            <cyboxCommon:Simple_Hash_Value>2add04f5b4276548261f337a78bcf585</cyboxCommon:Simple_Hash_Value>
+                        </cyboxCommon:Hash>
+                        <cyboxCommon:Hash>
+                            <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                            <cyboxCommon:Simple_Hash_Value>6bfcae1af885cc0ba9585f0095de14d42419047a</cyboxCommon:Simple_Hash_Value>
+                        </cyboxCommon:Hash>
+                    </FileObj:Hashes>
+                </cybox:Properties>
+            </maecPackage:Malware_Instance_Object_Attributes>
+            <maecPackage:Analyses>
+                <maecPackage:Analysis method="static" id="pefile:analysis-7ed743dd-50e6-4302-8393-b37ebab625b0">
+                    <maecPackage:Findings_Bundle_Reference bundle_idref="pefile:bundle-71bee0f5-3ffd-4f50-a1fc-058a9b31ee58"/>
+                    <maecPackage:Tools>
+                        <maecPackage:Tool id="pefile:tool-2434347d-7ea4-4bbc-8494-68d253b4f1e8">
+                            <cyboxCommon:Name>pefile</cyboxCommon:Name>
+                            <cyboxCommon:Vendor>Ero Carrera</cyboxCommon:Vendor>
+                        </maecPackage:Tool>
+                    </maecPackage:Tools>
+                </maecPackage:Analysis>
+            </maecPackage:Analyses>
+            <maecPackage:Findings_Bundles>
+                <maecPackage:Bundle defined_subject="false" content_type="static analysis tool output" id="pefile:bundle-71bee0f5-3ffd-4f50-a1fc-058a9b31ee58" schema_version="4.1">
+                    <maecBundle:Objects>
+                        <maecBundle:Object id="pefile:object-67959324-2304-44e6-a1ca-73e9d5e4d90c">
+                            <cybox:Properties xsi:type="WinExecutableFileObj:WindowsExecutableFileObjectType">
+                                <WinExecutableFileObj:Headers>
+                                    <WinExecutableFileObj:DOS_Header>
+                                        <WinExecutableFileObj:e_magic>23117</WinExecutableFileObj:e_magic>
+                                        <WinExecutableFileObj:e_cblp>144</WinExecutableFileObj:e_cblp>
+                                        <WinExecutableFileObj:e_cp>3</WinExecutableFileObj:e_cp>
+                                        <WinExecutableFileObj:e_crlc>0</WinExecutableFileObj:e_crlc>
+                                        <WinExecutableFileObj:e_cparhdr>4</WinExecutableFileObj:e_cparhdr>
+                                        <WinExecutableFileObj:e_minalloc>0</WinExecutableFileObj:e_minalloc>
+                                        <WinExecutableFileObj:e_maxalloc>65535</WinExecutableFileObj:e_maxalloc>
+                                        <WinExecutableFileObj:e_ss>0</WinExecutableFileObj:e_ss>
+                                        <WinExecutableFileObj:e_sp>184</WinExecutableFileObj:e_sp>
+                                        <WinExecutableFileObj:e_csum>0</WinExecutableFileObj:e_csum>
+                                        <WinExecutableFileObj:e_ip>0</WinExecutableFileObj:e_ip>
+                                        <WinExecutableFileObj:e_cs>0</WinExecutableFileObj:e_cs>
+                                        <WinExecutableFileObj:e_lfarlc>64</WinExecutableFileObj:e_lfarlc>
+                                        <WinExecutableFileObj:e_ovro>0</WinExecutableFileObj:e_ovro>
+                                        <WinExecutableFileObj:e_oemid>0</WinExecutableFileObj:e_oemid>
+                                        <WinExecutableFileObj:e_oeminfo>0</WinExecutableFileObj:e_oeminfo>
+                                        <WinExecutableFileObj:reserved2/>
+                                        <WinExecutableFileObj:e_lfanew>128</WinExecutableFileObj:e_lfanew>
+                                    </WinExecutableFileObj:DOS_Header>
+                                    <WinExecutableFileObj:File_Header>
+                                        <WinExecutableFileObj:Machine>332</WinExecutableFileObj:Machine>
+                                        <WinExecutableFileObj:Number_Of_Sections>3</WinExecutableFileObj:Number_Of_Sections>
+                                        <WinExecutableFileObj:Time_Date_Stamp>0x4B842930 [Tue Feb 23 19:14:56 2010 UTC]</WinExecutableFileObj:Time_Date_Stamp>
+                                        <WinExecutableFileObj:Pointer_To_Symbol_Table>0</WinExecutableFileObj:Pointer_To_Symbol_Table>
+                                        <WinExecutableFileObj:Number_Of_Symbols>0</WinExecutableFileObj:Number_Of_Symbols>
+                                        <WinExecutableFileObj:Size_Of_Optional_Header>224</WinExecutableFileObj:Size_Of_Optional_Header>
+                                        <WinExecutableFileObj:Characteristics>8450</WinExecutableFileObj:Characteristics>
+                                    </WinExecutableFileObj:File_Header>
+                                    <WinExecutableFileObj:Optional_Header>
+                                        <WinExecutableFileObj:Magic>267</WinExecutableFileObj:Magic>
+                                        <WinExecutableFileObj:Major_Linker_Version>8</WinExecutableFileObj:Major_Linker_Version>
+                                        <WinExecutableFileObj:Minor_Linker_Version>0</WinExecutableFileObj:Minor_Linker_Version>
+                                        <WinExecutableFileObj:Size_Of_Code>12288</WinExecutableFileObj:Size_Of_Code>
+                                        <WinExecutableFileObj:Size_Of_Initialized_Data>1536</WinExecutableFileObj:Size_Of_Initialized_Data>
+                                        <WinExecutableFileObj:Address_Of_Entry_Point>20206</WinExecutableFileObj:Address_Of_Entry_Point>
+                                        <WinExecutableFileObj:Base_Of_Code>8192</WinExecutableFileObj:Base_Of_Code>
+                                        <WinExecutableFileObj:Base_Of_Data>24576</WinExecutableFileObj:Base_Of_Data>
+                                        <WinExecutableFileObj:Image_Base>4194304</WinExecutableFileObj:Image_Base>
+                                        <WinExecutableFileObj:Section_Alignment>8192</WinExecutableFileObj:Section_Alignment>
+                                        <WinExecutableFileObj:File_Alignment>512</WinExecutableFileObj:File_Alignment>
+                                        <WinExecutableFileObj:Major_OS_Version>4</WinExecutableFileObj:Major_OS_Version>
+                                        <WinExecutableFileObj:Minor_OS_Version>0</WinExecutableFileObj:Minor_OS_Version>
+                                        <WinExecutableFileObj:Major_Image_Version>0</WinExecutableFileObj:Major_Image_Version>
+                                        <WinExecutableFileObj:Minor_Image_Version>0</WinExecutableFileObj:Minor_Image_Version>
+                                        <WinExecutableFileObj:Major_Subsystem_Version>4</WinExecutableFileObj:Major_Subsystem_Version>
+                                        <WinExecutableFileObj:Minor_Subsystem_Version>0</WinExecutableFileObj:Minor_Subsystem_Version>
+                                        <WinExecutableFileObj:Win32_Version_Value>0</WinExecutableFileObj:Win32_Version_Value>
+                                        <WinExecutableFileObj:Size_Of_Image>40960</WinExecutableFileObj:Size_Of_Image>
+                                        <WinExecutableFileObj:Size_Of_Headers>512</WinExecutableFileObj:Size_Of_Headers>
+                                        <WinExecutableFileObj:Checksum>0</WinExecutableFileObj:Checksum>
+                                        <WinExecutableFileObj:Subsystem>3</WinExecutableFileObj:Subsystem>
+                                        <WinExecutableFileObj:DLL_Characteristics>34112</WinExecutableFileObj:DLL_Characteristics>
+                                        <WinExecutableFileObj:Size_Of_Stack_Reserve>1048576</WinExecutableFileObj:Size_Of_Stack_Reserve>
+                                        <WinExecutableFileObj:Size_Of_Stack_Commit>4096</WinExecutableFileObj:Size_Of_Stack_Commit>
+                                        <WinExecutableFileObj:Size_Of_Heap_Reserve>1048576</WinExecutableFileObj:Size_Of_Heap_Reserve>
+                                        <WinExecutableFileObj:Size_Of_Heap_Commit>4096</WinExecutableFileObj:Size_Of_Heap_Commit>
+                                        <WinExecutableFileObj:Loader_Flags>0</WinExecutableFileObj:Loader_Flags>
+                                        <WinExecutableFileObj:Number_Of_Rva_And_Sizes>16</WinExecutableFileObj:Number_Of_Rva_And_Sizes>
+                                    </WinExecutableFileObj:Optional_Header>
+                                </WinExecutableFileObj:Headers>
+                                <WinExecutableFileObj:Imports>
+                                    <WinExecutableFileObj:Import>
+                                        <WinExecutableFileObj:File_Name>mscoree.dll</WinExecutableFileObj:File_Name>
+                                        <WinExecutableFileObj:Imported_Functions>
+                                            <WinExecutableFileObj:Imported_Function>
+                                                <WinExecutableFileObj:Function_Name>_CorDllMain</WinExecutableFileObj:Function_Name>
+                                            </WinExecutableFileObj:Imported_Function>
+                                        </WinExecutableFileObj:Imported_Functions>
+                                    </WinExecutableFileObj:Import>
+                                </WinExecutableFileObj:Imports>
+                                <WinExecutableFileObj:Resources>
+                                    <WinExecutableFileObj:Resource>
+                                        <WinExecutableFileObj:Type>RT_VERSION</WinExecutableFileObj:Type>
+                                        <WinExecutableFileObj:Size>728</WinExecutableFileObj:Size>
+                                        <WinExecutableFileObj:Language>LANG_NEUTRAL</WinExecutableFileObj:Language>
+                                        <WinExecutableFileObj:Sub_Language>SUBLANG_NEUTRAL</WinExecutableFileObj:Sub_Language>
+                                    </WinExecutableFileObj:Resource>
+                                </WinExecutableFileObj:Resources>
+                                <WinExecutableFileObj:Sections>
+                                    <WinExecutableFileObj:Section>
+                                        <WinExecutableFileObj:Section_Header>
+                                            <WinExecutableFileObj:Name>.text</WinExecutableFileObj:Name>
+                                            <WinExecutableFileObj:Virtual_Size>12020</WinExecutableFileObj:Virtual_Size>
+                                            <WinExecutableFileObj:Virtual_Address>8192</WinExecutableFileObj:Virtual_Address>
+                                            <WinExecutableFileObj:Size_Of_Raw_Data>12288</WinExecutableFileObj:Size_Of_Raw_Data>
+                                            <WinExecutableFileObj:Pointer_To_Raw_Data>512</WinExecutableFileObj:Pointer_To_Raw_Data>
+                                            <WinExecutableFileObj:Pointer_To_Relocations>0</WinExecutableFileObj:Pointer_To_Relocations>
+                                            <WinExecutableFileObj:Pointer_To_Linenumbers>0</WinExecutableFileObj:Pointer_To_Linenumbers>
+                                            <WinExecutableFileObj:Number_Of_Relocations>0</WinExecutableFileObj:Number_Of_Relocations>
+                                            <WinExecutableFileObj:Number_Of_Linenumbers>0</WinExecutableFileObj:Number_Of_Linenumbers>
+                                            <WinExecutableFileObj:Characteristics>1610612768</WinExecutableFileObj:Characteristics>
+                                        </WinExecutableFileObj:Section_Header>
+                                        <WinExecutableFileObj:Data_Hashes>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>81f435812ac29e6cb61c752b3ec75b80</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>f0ab25ef884cc77282d8b1b678a6a74682dfb7b7</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA256</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>1d5ede8a7832ec1ba244fa6e62c70fe9fad39b6493cf5458b3c83f14665e139f</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA512</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>cb19816551a8713c2f19bd7643a1804dab8cbb4839a6977a722e6a96459bf2bbb06a0bc8fb3d0c73bf9a8085afab9f5f558ccd86be4312ed9f48d1bb32c41de2</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                        </WinExecutableFileObj:Data_Hashes>
+                                        <WinExecutableFileObj:Entropy>
+                                            <WinExecutableFileObj:Value>5.76231552742</WinExecutableFileObj:Value>
+                                        </WinExecutableFileObj:Entropy>
+                                    </WinExecutableFileObj:Section>
+                                    <WinExecutableFileObj:Section>
+                                        <WinExecutableFileObj:Section_Header>
+                                            <WinExecutableFileObj:Name>.rsrc</WinExecutableFileObj:Name>
+                                            <WinExecutableFileObj:Virtual_Size>816</WinExecutableFileObj:Virtual_Size>
+                                            <WinExecutableFileObj:Virtual_Address>24576</WinExecutableFileObj:Virtual_Address>
+                                            <WinExecutableFileObj:Size_Of_Raw_Data>1024</WinExecutableFileObj:Size_Of_Raw_Data>
+                                            <WinExecutableFileObj:Pointer_To_Raw_Data>12800</WinExecutableFileObj:Pointer_To_Raw_Data>
+                                            <WinExecutableFileObj:Pointer_To_Relocations>0</WinExecutableFileObj:Pointer_To_Relocations>
+                                            <WinExecutableFileObj:Pointer_To_Linenumbers>0</WinExecutableFileObj:Pointer_To_Linenumbers>
+                                            <WinExecutableFileObj:Number_Of_Relocations>0</WinExecutableFileObj:Number_Of_Relocations>
+                                            <WinExecutableFileObj:Number_Of_Linenumbers>0</WinExecutableFileObj:Number_Of_Linenumbers>
+                                            <WinExecutableFileObj:Characteristics>1073741888</WinExecutableFileObj:Characteristics>
+                                        </WinExecutableFileObj:Section_Header>
+                                        <WinExecutableFileObj:Data_Hashes>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>18c40d917a8943dc421afa1c4b5aca0d</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>20ddc0b2196f00f715c21e511efac8e9a2548b04</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA256</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>3a45c399ecabdca615c5152555b56a6d7c1cf318f94e51cec50554e4e2a1baa3</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA512</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>3a874fdc7a645523b1d0a04327e0d8d019ca660595a097f46f61cf03b2ec2ef37cdf753580c21f7c43bcd154a2a279b17e9dfe9769aadb5c85795bd8a49f0163</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                        </WinExecutableFileObj:Data_Hashes>
+                                        <WinExecutableFileObj:Entropy>
+                                            <WinExecutableFileObj:Value>2.61212178089</WinExecutableFileObj:Value>
+                                        </WinExecutableFileObj:Entropy>
+                                    </WinExecutableFileObj:Section>
+                                    <WinExecutableFileObj:Section>
+                                        <WinExecutableFileObj:Section_Header>
+                                            <WinExecutableFileObj:Name>.reloc</WinExecutableFileObj:Name>
+                                            <WinExecutableFileObj:Virtual_Size>12</WinExecutableFileObj:Virtual_Size>
+                                            <WinExecutableFileObj:Virtual_Address>32768</WinExecutableFileObj:Virtual_Address>
+                                            <WinExecutableFileObj:Size_Of_Raw_Data>512</WinExecutableFileObj:Size_Of_Raw_Data>
+                                            <WinExecutableFileObj:Pointer_To_Raw_Data>13824</WinExecutableFileObj:Pointer_To_Raw_Data>
+                                            <WinExecutableFileObj:Pointer_To_Relocations>0</WinExecutableFileObj:Pointer_To_Relocations>
+                                            <WinExecutableFileObj:Pointer_To_Linenumbers>0</WinExecutableFileObj:Pointer_To_Linenumbers>
+                                            <WinExecutableFileObj:Number_Of_Relocations>0</WinExecutableFileObj:Number_Of_Relocations>
+                                            <WinExecutableFileObj:Number_Of_Linenumbers>0</WinExecutableFileObj:Number_Of_Linenumbers>
+                                            <WinExecutableFileObj:Characteristics>1107296320</WinExecutableFileObj:Characteristics>
+                                        </WinExecutableFileObj:Section_Header>
+                                        <WinExecutableFileObj:Data_Hashes>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>901df88560a4bf4280931c45f4c5dd5b</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>3ee65099d6f7500f07d1c35c829283934e49789c</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA256</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>38c449d1b7a42fd8082df34dfc3cf0268cc63113f1f24bc290d42c97d701d10c</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                            <cyboxCommon:Hash>
+                                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA512</cyboxCommon:Type>
+                                                <cyboxCommon:Simple_Hash_Value>40990eeab920f2d1326679aa581f20bb12a50207179aeb7f9f46e518708bc9400cb679f65b17a8ddd3498bd4d9b19f1d4df1bd5ebdfb23f9f2ea4276f0fc5f04</cyboxCommon:Simple_Hash_Value>
+                                            </cyboxCommon:Hash>
+                                        </WinExecutableFileObj:Data_Hashes>
+                                        <WinExecutableFileObj:Entropy>
+                                            <WinExecutableFileObj:Value>0.0815394123432</WinExecutableFileObj:Value>
+                                        </WinExecutableFileObj:Entropy>
+                                    </WinExecutableFileObj:Section>
+                                </WinExecutableFileObj:Sections>
+                            </cybox:Properties>
+                        </maecBundle:Object>
+                    </maecBundle:Objects>
+                </maecPackage:Bundle>
+            </maecPackage:Findings_Bundles>
+        </maecPackage:Malware_Subject>
+    </maecPackage:Malware_Subjects>
+</maecPackage:MAEC_Package>
