@@ -62,6 +62,21 @@ Ubuntu package repository:
 For more information about installing lxml, see
 http://lxml.de/installation.html
 
+Features
+--------
+
+- metadata
+    - file name (on disk)
+    - file path
+    - file size (in bytes)
+    - hashes (md5, sha1)
+- dos header
+- file header
+- optional header
+- exports
+- imports
+- resource directories
+
 References
 ----------
 
