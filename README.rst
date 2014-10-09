@@ -3,7 +3,7 @@ pefile-to-maec
 
 A Python library for converting output from Ero Carrera's `pefile <https://code.google.com/p/pefile/>`_ utility to MAEC XML content.  It is currently in the pre-release phase.
 
-:Source: https://raw.githubusercontent.com/MAECProject/pefile/pefile_to_maec/pefile_to_maec.py
+:Source: https://raw.githubusercontent.com/MAECProject/pefile-to-maec/master/pefile_to_maec.py
 :MAEC: http://maec.mitre.org
 :CybOX: http://cybox.mitre.org
 
