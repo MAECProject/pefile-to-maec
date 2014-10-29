@@ -40,9 +40,7 @@ Installation
 
 The pefile package does not require any external libraries if run from the 
 command line.
-If installing from source, ``setuptools`` is required.  You can also install pefile from within the Ubuntu package repository:
-
--  python-pefile
+If installing from source, ``setuptools`` is required.
 
 The ``maec`` package depends on the following Python libraries: \* ``lxml`` >=
 3.1.x \* ``python-cybox`` >= 2.1.x.x \* ``setuptools`` (only if installing

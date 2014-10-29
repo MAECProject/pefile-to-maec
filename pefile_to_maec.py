@@ -2,7 +2,7 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # For more information, please refer to the LICENSE.txt file.
 
-__version__ = '0.1.0b1'
+__version__ = '0.1.0b2'
 
 import argparse
 from pprint import pprint

@@ -8,9 +8,8 @@ except ImportError:
         sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
         import pefile
     except Exception as err:
-        print 'Unable to import pefile from parent directory.\n'
-        print 'Please ensure that pefile resides in the current directory or \
-                install pefile.\n'
+        print 'Unable to import pefile.\n'
+        print 'Please download pefile and place the folder in your PYTHONPATH or install pefile with a package manager.\n'
         print 'ERROR MSG => %s' % err.message
         sys.exit(-1)
 from copy import deepcopy
