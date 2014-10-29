@@ -14,7 +14,7 @@ def get_version():
                 return version
         raise AttributeError("Package does not have a __version__")
 
-with open('README') as f:
+with open('README.rst') as f:
     readme = f.read()
 
 setup(
