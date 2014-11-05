@@ -5,9 +5,14 @@
 __version__ = '0.1.0b2'
 
 import argparse
+import os
 from pprint import pprint
 from pefile_to_maec import generate_package_from_binary_filepath
 from maec.misc.options import ScriptOptions
+
+def create_maec(inputfile, outpath, options):
+    package = generate_package_from_binary_filepath(inputfile, options)
+    package.to_xml_file(args.output)
 
 if __name__ == '__main__':
 
@@ -26,5 +31,25 @@ if __name__ == '__main__':
     options.normalize_bundles = args.normalize
     options.dereference_bundles = args.dereference
 
-    package = generate_package_from_binary_filepath(args.input, options)
-    package.to_xml_file(args.output)
+    # Test if the input is a directory or file
+    if os.path.isfile(args.input):
+        outfilename = args.output
+        # Test if the output is a directory
+        # If so, concatenate "_maec.xml" to the input filename
+        # and use this as the output filename
+        if os.path.isdir(args.output):
+            outfilename = os.path.join(args.output, str(os.path.basename(args.input))[:-4] + "_maec.xml")
+        # If we're dealing with a single file, just call create_maec()
+        create_maec(args.input, outfilename, options)
+    # If a directory was specified, perform the corresponding conversion
+    elif os.path.isdir(args.input):
+        # Iterate and try to parse/convert each file in the directory
+        for filename in os.listdir(args.input):
+            # Only handle XML files
+            if str(filename)[-3:] != "xml":
+                print str("Error: {0} does not appear to be an XML file. Skipping.\n").format(filename)
+                continue
+            outfilename = str(filename)[:-4] + "_maec.xml"
+            create_maec(os.path.join(args.input, filename), os.path.join(args.output, outfilename), options)
+    else:
+        print "Input file " + args.input + " does not exist"
