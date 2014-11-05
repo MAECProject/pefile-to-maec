@@ -1,15 +1,14 @@
 pefile-to-maec
 ==============
 
-A Python library for converting output from Ero Carrera's `pefile <https://code.google.com/p/pefile/>`_ utility to MAEC XML content.  It is currently in the pre-release phase.
+A Python library for converting output from Ero Carrera's `pefile <https://code.google.com/p/pefile/>`_ utility to MAEC XML content.  It is currently in the BETA phase.
 
 pefile-to-maec uses the pefile package: "pefile is a multi-platform Python module to read and work with Portable Executable (aka PE) files. Most of the information in the PE Header is accessible, as well as all the sections, section's information and data."[1]
 
-The code consists of a package that converts binary files into MAEC (``/pefile_to_maec``), and a script that uses that package (``/pefile_to_maec.py``).
+This package consists of a module that converts binary files into MAEC (``/pefile_to_maec``), and a script that uses that module (``pefile_to_maec.py``).
 
 :Source: https://raw.githubusercontent.com/MAECProject/pefile-to-maec/master/pefile_to_maec.py
 :MAEC: http://maec.mitre.org
-:CybOX: http://cybox.mitre.org
 
 Dependencies
 ------------
@@ -37,21 +36,23 @@ Dependencies
 Usage
 -----
 
-The secript can be called with:
+The script can be called with:
 
 python pefile_to_maec.py input output [--deduplicate] [--dereference] [--normalize]
 
 - ``input`` and ``output`` may be files or directories
-- ``--deduplicate``, ``-dd``: deduplicate objects in MAEC output
-- ``--dereference``, ``-dr``: dereference the MAEC output
-- ``--normalize``, ``-n``: normalize the MAEC output
+- ``--deduplicate``, ``-dd``: deduplicate objects in MAEC output (Objects only)
+- ``--dereference``, ``-dr``: dereference the MAEC output (Objects only)
+- ``--normalize``, ``-n``: normalize the MAEC output (Objects only)
 
-The package exposes the following functions:
+The module exposes the following functions:
 
 -  ``generate_package_from_binary_filepath`` - given an filepath, return
-   a python-maec Pacakge object
--  ``set_proxies`` - optionally called to supply proxy information to
-   the package; supplied as a dictionary like
+   a python-maec Package object with the PEFile output.
+   
+To use these module functions, the module must first be installed with setuptools:
+
+``python setup.py install``
 
 Compatibility
 -------------
@@ -100,13 +101,6 @@ Features
 - exports
 - imports
 - resource directories
-
-
-
-References
-----------
-
-[1]: https://code.google.com/p/pefile/
 
 Feedback
 --------
