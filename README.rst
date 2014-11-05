@@ -3,6 +3,10 @@ pefile-to-maec
 
 A Python library for converting output from Ero Carrera's `pefile <https://code.google.com/p/pefile/>`_ utility to MAEC XML content.  It is currently in the pre-release phase.
 
+pefile-to-maec uses the pefile package: "pefile is a multi-platform Python module to read and work with Portable Executable (aka PE) files. Most of the information in the PE Header is accessible, as well as all the sections, section's information and data."[1]
+
+The code consists of a package that converts binary files into MAEC (``/pefile_to_maec``), and a script that uses that package (``/pefile_to_maec.py``).
+
 :Source: https://raw.githubusercontent.com/MAECProject/pefile-to-maec/master/pefile_to_maec.py
 :MAEC: http://maec.mitre.org
 :CybOX: http://cybox.mitre.org
@@ -14,6 +18,8 @@ Dependencies
 
 **python-cybox** |cybox version badge| |cybox downloads badge|
 
+**pefile** |pefile version badge| |pefile downloads badge|
+
 .. |maec version badge| image:: https://pypip.in/v/maec/badge.png
    :target: https://pypi.python.org/pypi/maec/
 .. |maec downloads badge| image:: https://pypip.in/d/maec/badge.png
@@ -22,13 +28,30 @@ Dependencies
    :target: https://pypi.python.org/pypi/cybox/
 .. |cybox downloads badge| image:: https://pypip.in/d/cybox/badge.png
    :target: https://pypi.python.org/pypi/cybox/
+.. |pefile version badge| image:: https://pypip.in/v/pefile/badge.png
+   :target: https://pypi.python.org/pypi/pefile/
+.. |pefile downloads badge| image:: https://pypip.in/d/pefile/badge.png
+   :target: https://pypi.python.org/pypi/pefile/
+   
 
-Overview
---------
+Usage
+-----
 
-pefile-to-maec employs the `python-maec <https://pypi.python.org/pypi/maec/>`_ and `python-cybox <https://pypi.python.org/pypi/cybox/>`_ for the conversion to MAEC.
+The secript can be called with:
 
-"pefile is a multi-platform Python module to read and work with Portable Executable (aka PE) files. Most of the information in the PE Header is accessible, as well as all the sections, section's information and data."[1]
+python pefile_to_maec.py input output [--deduplicate] [--dereference] [--normalize]
+
+- ``input`` and ``output`` may be files or directories
+- ``--deduplicate``, ``-dd``: deduplicate objects in MAEC output
+- ``--dereference``, ``-dr``: dereference the MAEC output
+- ``--normalize``, ``-n``: normalize the MAEC output
+
+The package exposes the following functions:
+
+-  ``generate_package_from_binary_filepath`` - given an filepath, return
+   a python-maec Pacakge object
+-  ``set_proxies`` - optionally called to supply proxy information to
+   the package; supplied as a dictionary like
 
 Compatibility
 -------------
@@ -38,8 +61,11 @@ The pefile-to-maec library is tested and written against python ``2.7.x``. Compa
 Installation
 ------------
 
+pefile-to-maec employs the `python-maec <https://pypi.python.org/pypi/maec/>`_ and `python-cybox <https://pypi.python.org/pypi/cybox/>`_ for the conversion to MAEC.
+
 The pefile package does not require any external libraries if run from the 
 command line.
+
 If installing from source, ``setuptools`` is required.
 
 The ``maec`` package depends on the following Python libraries: \* ``lxml`` >=
@@ -74,6 +100,8 @@ Features
 - exports
 - imports
 - resource directories
+
+
 
 References
 ----------
