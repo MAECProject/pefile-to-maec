@@ -6,7 +6,6 @@ __version__ = '0.1.0b2'
 
 import argparse
 import os
-from pprint import pprint
 from pefile_to_maec import generate_package_from_binary_filepath
 from maec.misc.options import ScriptOptions
 
