@@ -1,11 +1,14 @@
 pefile-to-maec
 ==============
 
-A Python library for converting output from Ero Carrera's `pefile <https://code.google.com/p/pefile/>`_ utility to MAEC XML content.  It is currently in the pre-release phase.
+A Python library for converting output from Ero Carrera's `pefile <https://code.google.com/p/pefile/>`_ utility to MAEC XML content.  It is currently in the BETA phase.
+
+pefile-to-maec uses the pefile package: "pefile is a multi-platform Python module to read and work with Portable Executable (aka PE) files. Most of the information in the PE Header is accessible, as well as all the sections, section's information and data."[1]
+
+This package consists of a module that converts binary files into MAEC (``/pefile_to_maec``), and a script that uses that module (``pefile_to_maec.py``).
 
 :Source: https://raw.githubusercontent.com/MAECProject/pefile-to-maec/master/pefile_to_maec.py
 :MAEC: http://maec.mitre.org
-:CybOX: http://cybox.mitre.org
 
 Dependencies
 ------------
@@ -13,6 +16,8 @@ Dependencies
 **python-maec** |maec version badge| |maec downloads badge|
 
 **python-cybox** |cybox version badge| |cybox downloads badge|
+
+**pefile** |pefile version badge| |pefile downloads badge|
 
 .. |maec version badge| image:: https://pypip.in/v/maec/badge.png
    :target: https://pypi.python.org/pypi/maec/
@@ -22,13 +27,32 @@ Dependencies
    :target: https://pypi.python.org/pypi/cybox/
 .. |cybox downloads badge| image:: https://pypip.in/d/cybox/badge.png
    :target: https://pypi.python.org/pypi/cybox/
+.. |pefile version badge| image:: https://pypip.in/v/pefile/badge.png
+   :target: https://pypi.python.org/pypi/pefile/
+.. |pefile downloads badge| image:: https://pypip.in/d/pefile/badge.png
+   :target: https://pypi.python.org/pypi/pefile/
+   
 
-Overview
---------
+Usage
+-----
 
-pefile-to-maec employs the `python-maec <https://pypi.python.org/pypi/maec/>`_ and `python-cybox <https://pypi.python.org/pypi/cybox/>`_ for the conversion to MAEC.
+The script can be called with:
 
-"pefile is a multi-platform Python module to read and work with Portable Executable (aka PE) files. Most of the information in the PE Header is accessible, as well as all the sections, section's information and data."[1]
+python pefile_to_maec.py input output [--deduplicate] [--dereference] [--normalize]
+
+- ``input`` and ``output`` may be files or directories
+- ``--deduplicate``, ``-dd``: deduplicate objects in MAEC output (Objects only)
+- ``--dereference``, ``-dr``: dereference the MAEC output (Objects only)
+- ``--normalize``, ``-n``: normalize the MAEC output (Objects only)
+
+The module exposes the following functions:
+
+-  ``generate_package_from_binary_filepath`` - given an filepath, return
+   a python-maec Package object with the PEFile output.
+   
+To use these module functions, the module must first be installed with setuptools:
+
+``python setup.py install``
 
 Compatibility
 -------------
@@ -38,11 +62,12 @@ The pefile-to-maec library is tested and written against python ``2.7.x``. Compa
 Installation
 ------------
 
+pefile-to-maec employs the `python-maec <https://pypi.python.org/pypi/maec/>`_ and `python-cybox <https://pypi.python.org/pypi/cybox/>`_ for the conversion to MAEC.
+
 The pefile package does not require any external libraries if run from the 
 command line.
-If installing from source, ``setuptools`` is required.  You can also install pefile from within the Ubuntu package repository:
 
--  python-pefile
+If installing from source, ``setuptools`` is required.
 
 The ``maec`` package depends on the following Python libraries: \* ``lxml`` >=
 3.1.x \* ``python-cybox`` >= 2.1.x.x \* ``setuptools`` (only if installing
@@ -76,11 +101,6 @@ Features
 - exports
 - imports
 - resource directories
-
-References
-----------
-
-[1]: https://code.google.com/p/pefile/
 
 Feedback
 --------
