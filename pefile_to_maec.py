@@ -30,6 +30,9 @@ if __name__ == '__main__':
     options.normalize_bundles = args.normalize
     options.dereference_bundles = args.dereference
 
+    options_dict = options.to_dict()
+    options_dict["Created by"] = "PEFile to MAEC (http://github.com/MAECProject/pefile-to-maec)"
+    
     # Test if the input is a directory or file
     if os.path.isfile(args.input):
         outfilename = args.output
