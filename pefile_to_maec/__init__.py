@@ -1,7 +1,7 @@
 import pefile_to_maec
 import pefile_parser
 
-__version__ = '0.1.0b2'
+__version__ = '1.0.0-alpha1'
 
 def generate_package_from_binary_filepath(input_path, options = None):
     "Accept a filepath to a PE file and return a MAEC Package object"
