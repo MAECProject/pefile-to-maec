@@ -6,45 +6,30 @@ A Python library for converting output from Ero Carrera's `pefile <https://code.
 
 pefile-to-maec uses the pefile package: "pefile is a multi-platform Python module to read and work with Portable Executable (aka PE) files. Most of the information in the PE Header is accessible, as well as all the sections, section's information and data."[1]
 
-This package consists of a module that converts binary files into MAEC (``/pefile_to_maec``), and a script that uses that module (``pefile_to_maec.py``).
+This package consists of a module that captures the pefile output for binary files in MAEC format (``/pefile_to_maec``), and a script that uses that module (``pefile_to_maec.py``).
 
-:Source: https://raw.githubusercontent.com/MAECProject/pefile-to-maec/master/pefile_to_maec.py
+:Source: https://github.com/MAECProject/pefile-to-maec
 :MAEC: http://maec.mitre.org
 
 Dependencies
 ------------
+The pefile-to-maec script depends on the presence of certain packages/libraries
+to function. Please refer to their installation documentation for installation
+instructions.
 
-**python-maec** |maec version badge| |maec downloads badge|
-
-**python-cybox** |cybox version badge| |cybox downloads badge|
-
-**pefile** |pefile version badge| |pefile downloads badge|
-
-.. |maec version badge| image:: https://pypip.in/v/maec/badge.png
-   :target: https://pypi.python.org/pypi/maec/
-.. |maec downloads badge| image:: https://pypip.in/d/maec/badge.png
-   :target: https://pypi.python.org/pypi/maec/
-.. |cybox version badge| image:: https://pypip.in/v/cybox/badge.png
-   :target: https://pypi.python.org/pypi/cybox/
-.. |cybox downloads badge| image:: https://pypip.in/d/cybox/badge.png
-   :target: https://pypi.python.org/pypi/cybox/
-.. |pefile version badge| image:: https://pypip.in/v/pefile/badge.png
-   :target: https://pypi.python.org/pypi/pefile/
-.. |pefile downloads badge| image:: https://pypip.in/d/pefile/badge.png
-   :target: https://pypi.python.org/pypi/pefile/
-   
+-  `python-maec >=4.1.0.9 and <= 4.2.0.0 <https://pypi.python.org/pypi/maec>`_
+-  `python-cybox >=2.1.0.8 and <= 2.2.0.0. <https://pypi.python.org/pypi/cybox>`_
+-  `pefile >=1.2.10 <https://pypi.python.org/pypi/pefile>`_
 
 Usage
 -----
 
 The script can be called with:
 
-python pefile_to_maec.py input output [--deduplicate] [--dereference] [--normalize]
+``python pefile_to_maec.py infile outfile``
 
-- ``input`` and ``output`` may be files or directories
-- ``--deduplicate``, ``-dd``: deduplicate objects in MAEC output (Objects only)
-- ``--dereference``, ``-dr``: dereference the MAEC output (Objects only)
-- ``--normalize``, ``-n``: normalize the MAEC output (Objects only)
+Where ``infile`` refers to the input PE binary file and ``outfile`` the name of
+the MAEC XML file to which the output will be written.
 
 The module exposes the following functions:
 
@@ -55,38 +40,16 @@ To use these module functions, the module must first be installed with setuptool
 
 ``python setup.py install``
 
+At which point it can be used as a library:
+
+``
+import pefile_to_maec
+``
+
 Compatibility
 -------------
 
 The pefile-to-maec library is tested and written against python ``2.7.x``. Compatibility with other python versions is neither guaranteed nor implied.
-
-Installation
-------------
-
-pefile-to-maec employs the `python-maec <https://pypi.python.org/pypi/maec/>`_ and `python-cybox <https://pypi.python.org/pypi/cybox/>`_ for the conversion to MAEC.
-
-The pefile package does not require any external libraries if run from the 
-command line.
-
-If installing from source, ``setuptools`` is required.
-
-The ``maec`` package depends on the following Python libraries: \* ``lxml`` >=
-3.1.x \* ``python-cybox`` >= 2.1.x.x \* ``setuptools`` (only if installing
-using setup.py)
-
-For Windows installers of the above libraries, we recommend looking here:
-http://www.lfd.uci.edu/~gohlke/pythonlibs. python-cybox can be found at
-https://github.com/CybOXProject/python-cybox/releases.
-
-To build ``lxml`` on Ubuntu, you will need the following packages from the
-Ubuntu package repository:
-
--  python-dev
--  libxml2-dev
--  libxslt1-dev
-
-For more information about installing lxml, see
-http://lxml.de/installation.html
 
 Supported Features
 ------------------
