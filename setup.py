@@ -26,7 +26,7 @@ setup(
     long_description=readme,
     url="http://maec.mitre.org",
     packages=find_packages(),
-    install_requires=['maec>=4.1.0.8,<4.1.1.0', 'cybox>=2.1.0.8,<2.1.1.0', 'pefile>=1.2.10'],
+    install_requires=['maec>=4.1.0.9,<4.1.1.0', 'cybox>=2.1.0.8,<2.1.1.0', 'pefile>=1.2.10'],
     classifiers=[
         "Programming Language :: Python",
         "Development Status :: 4 - Beta",
