@@ -1,5 +1,6 @@
 pefile-to-maec
 ==============
+v1.0.0-beta1
 
 A Python library for converting output from Ero Carrera's `pefile <https://code.google.com/p/pefile/>`_ utility to MAEC XML content.  It is currently in the BETA phase.
 
