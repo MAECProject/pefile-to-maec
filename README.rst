@@ -42,9 +42,7 @@ To use these module functions, the module must first be installed with setuptool
 
 At which point it can be used as a library:
 
-``
-import pefile_to_maec
-``
+``import pefile_to_maec``
 
 Compatibility
 -------------
