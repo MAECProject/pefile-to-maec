@@ -17,8 +17,8 @@ The pefile-to-maec script depends on the presence of certain packages/libraries
 to function. Please refer to their installation documentation for installation
 instructions.
 
--  `python-maec >=4.1.0.9 and <= 4.2.0.0 <https://pypi.python.org/pypi/maec>`_
--  `python-cybox >=2.1.0.8 and <= 2.2.0.0. <https://pypi.python.org/pypi/cybox>`_
+-  `python-maec >=4.1.0.9 and < 4.1.0.13 <https://pypi.python.org/pypi/maec>`_
+-  `python-cybox >=2.1.0.8 and < 2.1.0.13. <https://pypi.python.org/pypi/cybox>`_
 -  `pefile >=1.2.10 <https://pypi.python.org/pypi/pefile>`_
 
 Usage
@@ -35,7 +35,7 @@ The module exposes the following functions:
 
 -  ``generate_package_from_binary_filepath`` - given an filepath, return
    a python-maec Package object with the PEFile output.
-   
+
 To use these module functions, the module must first be installed with setuptools:
 
 ``python setup.py install``
